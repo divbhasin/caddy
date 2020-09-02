@@ -17,7 +17,6 @@ package fileserver
 import (
 	"bytes"
 	"encoding/json"
-	"html/template"
 	"net/http"
 	"os"
 	"path"
@@ -25,6 +24,7 @@ import (
 
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
+	"github.com/caddyserver/caddy/v2/modules/caddyhttp/templates"
 )
 
 // Browse configures directory browsing.
@@ -32,7 +32,7 @@ type Browse struct {
 	// Use this template file instead of the default browse template.
 	TemplateFile string `json:"template_file,omitempty"`
 
-	template *template.Template
+	template *templates.Templates
 }
 
 func (fsrv *FileServer) serveBrowse(dirPath string, w http.ResponseWriter, r *http.Request, next caddyhttp.Handler) error {
