@@ -60,6 +60,7 @@ default, all incoming headers are passed through unmodified.)
 			fs.String("to", "", "Upstream address to which to to proxy traffic")
 			fs.Bool("change-host-header", false, "Set upstream Host header to address of upstream")
 			fs.Bool("insecure", false, "Disable TLS verification (WARNING: DISABLES SECURITY, WHY ARE YOU EVEN USING TLS?)")
+			fs.Bool("internal-certs", false, "Generate and use internal certificate")
 			return fs
 		}(),
 	})
@@ -72,6 +73,7 @@ func cmdReverseProxy(fs caddycmd.Flags) (int, error) {
 	to := fs.String("to")
 	changeHost := fs.Bool("change-host-header")
 	insecure := fs.Bool("insecure")
+	internalCerts := fs.Bool("internal-certs")
 
 	httpPort := strconv.Itoa(caddyhttp.DefaultHTTPPort)
 	httpsPort := strconv.Itoa(caddyhttp.DefaultHTTPSPort)
@@ -124,6 +126,11 @@ func cmdReverseProxy(fs caddycmd.Flags) (int, error) {
 		} else if toAddr.Scheme == "https" {
 			toAddr.Port = httpsPort
 		}
+	}
+
+	// set up internal certificates if the flag is set
+	if internalCerts {
+
 	}
 
 	// proceed to build the handler and server
